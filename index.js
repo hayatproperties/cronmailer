@@ -1,15 +1,6 @@
-// index.js
-// This script sets up a cron job using 'node-cron' to make an HTTP GET request
-// to a specified API endpoint every hour.
 
-// 1. Import necessary libraries
-// node-cron: For scheduling recurring tasks.
-// Install with: npm install node-cron axios dotenv
-const cron = require('node-cron');
-// axios: For making HTTP requests.
 const axios = require('axios');
-// dotenv: For loading environment variables from a .env file (recommended for API keys/URLs).
-require('dotenv').config();
+
 
 // 2. Configuration for the API endpoint
 // It's highly recommended to store sensitive information like API URLs
@@ -53,28 +44,7 @@ async function hitApiEndpoint() {
   }
 }
 
-// 4. Schedule the cron job
-// The cron syntax '0 * * * *' means:
-// 0: At minute 0 (the start of the hour)
-// *: Every hour
-// *: Every day of the month
-// *: Every month
-// *: Every day of the week
-// So, it runs at 00:00, 01:00, 02:00, etc., every day.
-console.log('Cron job scheduler started. Waiting for the next hour mark...');
-cron.schedule('0 * * * *', () => {
-  console.log(`\n--- Running hourly API hit job ---`);
-  hitApiEndpoint();
-});
 
-
-process.on('SIGINT', () => {
-  console.log('Shutting down cron job...');
-  process.exit();
-});
-
-process.on('SIGTERM', () => {
-  console.log('Shutting down cron job...');
-  process.exit();
-});
-
+(async function (){ 
+ await hitApiEndpoint()
+})();
